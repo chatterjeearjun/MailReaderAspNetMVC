@@ -1,4 +1,6 @@
 ﻿
+@model List<MailApplication.Models.EntityData.MailMaster>
+
 <div class="jumbotron">
     <p><a id="submit1" href="#" class="btn btn-primary btn-lg">Import Latest Mail &raquo;</a></p>
 
@@ -29,7 +31,7 @@
                     <th>Download</th>
 
                     </thead>
-                    @foreach (var item in ViewBag.userdetails)
+                    @foreach (var item in Model)
                     {
 
                     <tr>

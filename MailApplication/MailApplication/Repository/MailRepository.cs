@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using MailApplication.Models.EntityData;
 using MailKit;
@@ -92,7 +93,7 @@ namespace MailApplication.Repository
                         foreach (MimeEntity attachment in message.Attachments)
                         {
                             fileName = attachment.ContentDisposition?.FileName ?? attachment.ContentType.Name;
-                            var filePath = "C:\\Users\\arjun\\Downloads\\TestGMail\\MailApplication\\mimeKitAttachments\\";
+                            var filePath = ConfigurationManager.AppSettings["MailDownloadFolder"]; 
 
                             finalPath = filePath + fileName;
                             using (var stream = File.Create(finalPath))

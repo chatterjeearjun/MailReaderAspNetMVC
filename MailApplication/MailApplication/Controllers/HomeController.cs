@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,9 +14,9 @@ namespace MailApplication.Controllers
         {
             MailDBEntities r = new MailDBEntities();
             var data = r.MailMasters.ToList();
-            ViewBag.userdetails = data;
+            //ViewBag.userdetails = data;
             Session["userdetails"] = data;
-            return View();
+            return View(data);
         }
 
         [HttpPost]
@@ -23,7 +24,9 @@ namespace MailApplication.Controllers
         {
             List<MailMaster> SessionData = (List<MailMaster>)Session["userdetails"];
 
-            var mailRepository = new MailRepository("imap.gmail.com", 993, true, "mailkit.asp.net.mvc@gmail.com", "Mailkitaspnetmvc");
+            var mailRepository = new MailRepository(ConfigurationManager.AppSettings["MailServerDetails"], 993, true, ConfigurationManager.AppSettings["LogIn"], 
+                ConfigurationManager.AppSettings["Password"]);
+
             var allEmails = mailRepository.GetAllMails();
 
             using (MailDBEntities entities = new MailDBEntities())
@@ -40,7 +43,7 @@ namespace MailApplication.Controllers
 
             MailDBEntities r = new MailDBEntities();
             var data = r.MailMasters.ToList();
-            ViewBag.userdetails = data;
+            //ViewBag.userdetails = data;
             Session["userdetails"] = data;
             return Json(data, JsonRequestBehavior.AllowGet);
         }
