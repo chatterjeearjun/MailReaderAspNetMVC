@@ -1,0 +1,146 @@
+﻿
+<div class="jumbotron">
+    <p><a id="submit1" href="#" class="btn btn-primary btn-lg">Import Latest Mail &raquo;</a></p>
+
+    <div id="content_progress">
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-10">
+        <h2>Show Database value in DataTable</h2>
+        <p>
+            @{
+                ViewBag.Title = "Show Database value in DataTable";
+            }
+
+            <div>
+                <table id="t01">
+                    <thead>
+                    <th>ID</th>
+                    <th>Guid</th>
+                    <th>Subject</th>
+                    <th>Body</th>
+                    <th>AttachmentName</th>
+                    <th>ReceivedDateTime</th>
+                    <th>LastRunDatetime</th>
+
+                    <th>Download</th>
+
+                    </thead>
+                    @foreach (var item in ViewBag.userdetails)
+                    {
+
+                    <tr>
+                        <td>
+                            @item.ID
+                        </td>
+                        <td>
+                            @item.Guid
+                        </td>
+                        <td>
+                            @item.Subject
+                        </td>
+                        <td>
+                            @item.Body
+                        </td>
+                        <td>
+                            @item.AttachmentName
+                        </td>
+                        <td>
+                            @item.ReceivedDateTime
+                        </td>
+                        <td>
+                            @item.LastRunDatetime
+                        </td>
+                        <td>
+                            @Html.ActionLink("DownloadFile","Download",new { fileName = item.AttachmentContent })
+                        </td>
+                    </tr>
+
+                    }
+
+                </table>
+            </div>
+            <style>
+                table#t01 {
+                    width: 100%;
+                    background-color: #f1f1c1;
+                }
+
+                    table#t01 tr:nth-child(even) {
+                        background-color: #eee;
+                    }
+
+                    table#t01 tr:nth-child(odd) {
+                        background-color: #fff;
+                    }
+
+                    table#t01 th {
+                        color: white;
+                        background-color: blue;
+                    }
+
+                table, th, td {
+                    border: 1px solid black;
+                }
+
+                table, th, td {
+                    border: 1px solid black;
+                    border-collapse: collapse;
+                }
+
+                table, th, td {
+                    border: 1px solid black;
+                    border-collapse: collapse;
+                }
+
+                th, td {
+                    padding: 15px;
+                }
+            </style>
+        </p>
+    </div>
+</div>
+
+<script src="http://code.jquery.com/jquery-latest.js">
+
+</script>
+<script>
+            $(document).ready(function() {
+                $('#submit1').click(function(event) {
+                    event.preventDefault();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/PullLatestMail",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null) {
+                                location.reload();
+                            } else {
+                                alert("Something went wrong");
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });  
+
+                });
+            });
+
+            $(document).ajaxStart(function(){
+                $('#content_progress').text("Loading...");
+            });
+
+            $(document).ajaxComplete(function(){
+                $('#content_progress').text("");
+            });
+
+</script>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MailDBModelStoreContainer" CdmEntityContainer="MailDBEntities">
+    <EntitySetMapping Name="MailMasters">
+      <EntityTypeMapping TypeName="MailDBModel.MailMaster">
+        <MappingFragment StoreEntitySet="MailMaster">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Guid" ColumnName="Guid" />
+          <ScalarProperty Name="Subject" ColumnName="Subject" />
+          <ScalarProperty Name="Body" ColumnName="Body" />
+          <ScalarProperty Name="AttachmentName" ColumnName="AttachmentName" />
+          <ScalarProperty Name="AttachmentContent" ColumnName="AttachmentContent" />
+          <ScalarProperty Name="ReceivedDateTime" ColumnName="ReceivedDateTime" />
+          <ScalarProperty Name="LastRunDatetime" ColumnName="LastRunDatetime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

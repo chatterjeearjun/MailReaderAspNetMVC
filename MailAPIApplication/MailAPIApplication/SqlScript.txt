@@ -1,0 +1,31 @@
+﻿USE [MailDB]
+GO
+
+/****** Object:  Table [dbo].[MailMaster]    Script Date: 8/27/2020 8:03:05 PM ******/
+DROP TABLE [dbo].[MailMaster]
+GO
+
+/****** Object:  Table [dbo].[MailMaster]    Script Date: 8/27/2020 8:03:05 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[MailMaster](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Guid] [varchar](50) NULL,
+	[Subject] [varchar](max) NULL,
+	[Body] [varchar](max) NULL,
+	[AttachmentName] [varchar](max) NULL,
+	[AttachmentContent] [varchar](max) NULL,
+	[ReceivedDateTime] [datetime] NULL,
+	[LastRunDatetime] [datetime] NULL,
+ CONSTRAINT [PK_MailMaster] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
