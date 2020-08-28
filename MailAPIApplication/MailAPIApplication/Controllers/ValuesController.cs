@@ -29,7 +29,7 @@ namespace MailAPIApplication.Controllers
         {
             var list = _repo.MyValues.ToList();
 
-            if (id >= 0 && id <= list.Count)
+            if (id >= 0)
             {
                 return list.Where(x=>x.ID == id).FirstOrDefault();
             }
