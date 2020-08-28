@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using MailApplication.Models.EntityData;
@@ -12,8 +14,38 @@ namespace MailApplication.Controllers
     {
         public ActionResult Index()
         {
-            MailDBEntities r = new MailDBEntities();
-            var data = r.MailMasters.ToList();
+
+            // Uesd Web.API to retrive result
+            List<MailMaster> data = new List<MailMaster>(); 
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:51908/api/");
+                //HTTP GET
+                var responseTask = client.GetAsync("Values");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<IList<MailMaster>>();
+                    readTask.Wait();
+
+                    data = readTask.Result.ToList();
+                }
+                else //web api sent error response 
+                {
+                    //fallback to connect to Entities..
+                    MailDBEntities r = new MailDBEntities();
+                    data = r.MailMasters.ToList();
+                    
+                    // data = Enumerable.Empty<MailMaster>().ToList();
+
+                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+                }
+            }
+
+            //MailDBEntities r = new MailDBEntities();
+            //var data = r.MailMasters.ToList();
             //ViewBag.userdetails = data;
             Session["userdetails"] = data;
             return View(data);
@@ -24,7 +56,7 @@ namespace MailApplication.Controllers
         {
             List<MailMaster> SessionData = (List<MailMaster>)Session["userdetails"];
 
-            var mailRepository = new MailRepository(ConfigurationManager.AppSettings["MailServerDetails"], 993, true, ConfigurationManager.AppSettings["LogIn"], 
+            var mailRepository = new MailRepository(ConfigurationManager.AppSettings["MailServerDetails"], 993, true, ConfigurationManager.AppSettings["LogIn"],
                 ConfigurationManager.AppSettings["Password"]);
 
             var allEmails = mailRepository.GetAllMails();
